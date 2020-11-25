@@ -5,10 +5,12 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  local:
-    push: false
+  # local:
+  #   push: false
+  googleCloudBuild:
+    projectId: bold-streamer-296615
   artifacts:
-    - image: morris754/auth
+    - image: us.gcr.io/bold-streamer-296615/auth
       context: auth  
       docker: 
         dockerfile: Dockerfile 
