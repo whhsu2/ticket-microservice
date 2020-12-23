@@ -1,6 +1,20 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '../../app';
+import jwt from 'jsonwebtoken'
+
+const signin = () => {
+  const payload = {
+      id: new mongoose.Types.ObjectId().toHexString(),
+      email: 'test@test.com'
+  }
+
+  const token = jwt.sign(payload, process.env.JWT_KEY!)
+  const session = { jwt: token }
+  const sessionJson = JSON.stringify(session)
+  const base64 = Buffer.from(sessionJson).toString('base64')
+  return [`express:sess=${base64}`]
+}
 
 it('returns a 404 if the ticket is not found', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
@@ -13,7 +27,7 @@ it('returns the ticket if the ticket is found', async () => {
 
   const response = await request(app)
     .post('/api/tickets')
-    .set('Cookie', global.signin())
+    .set('Cookie', signin())
     .send({
       title,
       price,

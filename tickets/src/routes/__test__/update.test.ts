@@ -2,13 +2,27 @@ import request from 'supertest';
 import { app } from '../../app';
 import mongoose from 'mongoose';
 import { natsWrapper } from '../../nats-wrapper'
+import jwt from 'jsonwebtoken'
+
+const signin = () => {
+  const payload = {
+      id: new mongoose.Types.ObjectId().toHexString(),
+      email: 'test@test.com'
+  }
+
+  const token = jwt.sign(payload, process.env.JWT_KEY!)
+  const session = { jwt: token }
+  const sessionJson = JSON.stringify(session)
+  const base64 = Buffer.from(sessionJson).toString('base64')
+  return [`express:sess=${base64}`]
+}
 
 it('return a 404 if the provided id does not exist', async () => {
   const id = mongoose.Types.ObjectId().toHexString();
 
   await request(app)
     .put(`/api/tickets/${id}`)
-    .set('Cookie', global.signin())
+    .set('Cookie', signin())
     .send({
       title: 'aslkdfj',
       price: 20,
@@ -31,7 +45,7 @@ it('returns a 401 if the user is not authenticated', async () => {
 it('return a 401 if the user does not own the ticket', async () => {
   const response = await request(app)
     .post('/api/tickets')
-    .set('Cookie', global.signin())
+    .set('Cookie', signin())
     .send({
       title: 'aslkdfj',
       price: 20,
@@ -40,7 +54,7 @@ it('return a 401 if the user does not own the ticket', async () => {
 
   await request(app)
     .put(`/api/tickets/${response.body.id}`)
-    .set('Cookie', global.signin())
+    .set('Cookie', signin())
     .send({
       title: 'aslkdfj',
       price: 10,
@@ -49,7 +63,7 @@ it('return a 401 if the user does not own the ticket', async () => {
 });
 
 it('return a 400 if the user provides an invalid title or price', async () => {
-  const cookie = global.signin();
+  const cookie = signin();
 
   const response = await request(app)
     .post('/api/tickets')
@@ -80,7 +94,7 @@ it('return a 400 if the user provides an invalid title or price', async () => {
 });
 
 it('updates the ticket provided valid input', async () => {
-  const cookie = global.signin();
+  const cookie = signin();
 
   const response = await request(app)
     .post('/api/tickets')
@@ -109,7 +123,7 @@ it('updates the ticket provided valid input', async () => {
 });
 
 it('publishes an event', async () => {
-  const cookie = global.signin();
+  const cookie = signin();
 
   const response = await request(app)
     .post('/api/tickets')
