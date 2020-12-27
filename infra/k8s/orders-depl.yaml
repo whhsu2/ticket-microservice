@@ -14,7 +14,9 @@ spec:
     spec:
       containers:
         - name: orders
-          image: us.gcr.io/bold-streamer-296615/orders
+          # For GOOGLE CLOUD dev env
+          # image: us.gcr.io/bold-streamer-296615/orders
+          image: morris754/orders
           env:
             - name: MONGO_URI
               value: 'mongodb://orders-mongo-srv:27017/orders'
