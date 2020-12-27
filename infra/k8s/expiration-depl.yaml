@@ -14,7 +14,9 @@ spec:
     spec:
       containers:
         - name: expiration
-          image: us.gcr.io/bold-streamer-296615/expiration
+          # For GOOGLE CLOUD dev env
+          # image: us.gcr.io/bold-streamer-296615/expiration
+          image: morris754/expiration
           env:
             - name: NATS_URL
               value: 'http://nats-svc:4222'

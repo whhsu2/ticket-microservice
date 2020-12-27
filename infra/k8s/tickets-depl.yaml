@@ -14,7 +14,9 @@ spec:
     spec:
       containers:
         - name: tickets
-          image: us.gcr.io/bold-streamer-296615/tickets
+          # For GOOGLE CLOUD dev env
+          # image: us.gcr.io/bold-streamer-296615/tickets
+          image: morris754/tickets
           env:
             - name: MONGO_URI
               value: 'mongodb://tickets-mongo-srv:27017/tickets'
