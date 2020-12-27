@@ -14,7 +14,9 @@ spec:
     spec:
       containers:
         - name: payments
-          image: us.gcr.io/bold-streamer-296615/payments
+          # For GOOGLE CLOUD dev env
+          # image: us.gcr.io/bold-streamer-296615/payments
+          image: morris754/payments
           env:
             - name: MONGO_URI
               value: 'mongodb://payments-mongo-srv:27017/payments'

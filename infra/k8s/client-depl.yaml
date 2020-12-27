@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
         - name: client
-          image: us.gcr.io/bold-streamer-296615/client
+          # For GOOGLE CLOUD dev env
+          # image: us.gcr.io/bold-streamer-296615/client
+          image: morris754/client
+
 ---
 apiVersion: v1
 kind: Service
