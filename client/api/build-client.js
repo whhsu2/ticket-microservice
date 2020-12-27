@@ -10,7 +10,7 @@ const axiosApi = ({ req }) => {
     } else {
         // we are on the browser
         return axios.create({
-            baseURL: '/',
+            baseURL: 'http://moreezus.shop/',
         })
     }
 }
