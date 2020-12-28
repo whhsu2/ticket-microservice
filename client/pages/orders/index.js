@@ -1,10 +1,12 @@
 const OrderIndex = ({ orders }) => {
 
     const orderList = orders.map((order) => {
-      <tr key={order.id}>
-        <td>{order.ticket.title}</td>
-        <td>{order.ticket.status}</td>
-      </tr>
+      return (      
+        <tr key={order.id}>
+          <td>{order.ticket.title}</td>
+          <td>{order.status}</td>
+        </tr>
+      )
     })
 
     return (
